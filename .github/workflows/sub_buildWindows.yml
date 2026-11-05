@@ -211,6 +211,19 @@ jobs:
         run: |
           . $env:ccachebindir\ccache -s
 
+      - name: Upload portable build for local testing
+        if: "!inputs.skipBuild"
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: FreeCAD-windows-test-build
+          path: |
+            ${{ env.builddir }}/bin
+            ${{ env.builddir }}/Mod
+            ${{ env.builddir }}/Ext
+            ${{ env.builddir }}/data
+          if-no-files-found: error
+          retention-days: 2
+
       - name: Property editor accessibility regression
         if: "!inputs.skipBuild"
         run: |
