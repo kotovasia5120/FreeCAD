@@ -211,6 +211,12 @@ jobs:
         run: |
           . $env:ccachebindir\ccache -s
 
+      - name: Property editor accessibility regression
+        if: "!inputs.skipBuild"
+        run: |
+          ctest --test-dir "${{ env.builddir }}" -C Release -R "^PropertyEditorAccessibility_Tests_run$" --output-on-failure --no-tests=error
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
       - name: C++ unit tests
         if: false # Disabled because seems to not function on Windows build  # also: && !inputs.skipBuild
         timeout-minutes: 1
